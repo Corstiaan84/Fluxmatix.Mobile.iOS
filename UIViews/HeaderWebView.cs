@@ -40,17 +40,17 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 
 		public override void Scrolled (UIScrollView scrollView)
 		{
-			//throw new System.NotImplementedException ();
-			Console.WriteLine("Scrolled " + scrollView.ContentOffset.X.ToString());
+			//Console.WriteLine("Scrolled " + scrollView.ContentOffset.X.ToString());
 			RepositionHeader (scrollView);
 		}
 
-		private void RepositionHeader(UIScrollView scrollView)
+		public void RepositionHeader(UIScrollView scrollView)
 		{
 			var headerFrame = _headerWebView.HeaderView.Frame;
 			headerFrame.Y = 0 - headerFrame.Size.Height;
 			headerFrame.X = scrollView.ContentOffset.X;
 			_headerWebView.HeaderView.Frame = headerFrame;
+			scrollView.ContentInset = new UIEdgeInsets(headerFrame.Height, 0, 0, 0);
 		}
 	}
 }
