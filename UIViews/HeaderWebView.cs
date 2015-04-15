@@ -14,7 +14,7 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			HeaderView = headerView;
 			ScrollView.AddSubview (HeaderView);
 			ScrollView.Delegate = new HeaderWebViewScrollViewDelegate (this);
-			ScrollView.ContentInset = new UIEdgeInsets(HeaderView.Frame.Height, 0, 0, 0);
+			ScrollView.ContentInset = new UIEdgeInsets(HeaderView.Frame.Height, 20, 0, 20);
 			ScrollView.ContentOffset = new CoreGraphics.CGPoint(0, 0 - HeaderView.Frame.Height);
 		}
 	}
@@ -22,6 +22,8 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 	public class HeaderWebViewScrollViewDelegate : UIScrollViewDelegate
 	{
 		private UIHeaderWebView _headerWebView;
+		public Action HeaderViewRepositioned { get; set; }
+		public UIEdgeInsets ContentInset { get; set; }
 
 		public HeaderWebViewScrollViewDelegate(UIHeaderWebView headerWebView)
 		{
@@ -50,7 +52,9 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			headerFrame.Y = 0 - headerFrame.Size.Height;
 			headerFrame.X = scrollView.ContentOffset.X;
 			_headerWebView.HeaderView.Frame = headerFrame;
-			scrollView.ContentInset = new UIEdgeInsets(headerFrame.Height, 0, 0, 0);
+			scrollView.ContentInset = new UIEdgeInsets (headerFrame.Height, ContentInset.Left, ContentInset.Bottom, ContentInset.Right);
+			if(HeaderViewRepositioned != null)
+				HeaderViewRepositioned ();
 		}
 	}
 }
