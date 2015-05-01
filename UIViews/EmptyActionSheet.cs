@@ -50,6 +50,10 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			AddSubview (ToolBar);
 		}
 
+		public void SetHeight(int height) {
+			_height = height;
+		}
+
 		public void ShowInView ()
 		{
 			CalcHeight ();
@@ -91,7 +95,6 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 
 		private void CalcHeight ()
 		{
-			_height = 100;
 			if (Mode == Modes.SecondaryToolbar) {
 				if (_owner.NavigationController != null) {
 					_height = (int)_owner.NavigationController.Toolbar.Frame.Height;
