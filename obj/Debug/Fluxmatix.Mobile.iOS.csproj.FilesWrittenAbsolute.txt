@@ -3,3 +3,7 @@
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Debug/Fluxmatix.Mobile.iOS.dll
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/obj/Debug/Fluxmatix.Mobile.iOS.dll
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/obj/Debug/Fluxmatix.Mobile.iOS.dll.mdb
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Debug/Fluxmatix.Mobile.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Debug/Fluxmatix.Mobile.dll.mdb
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Debug/PerpetualEngine.SimpleStorage.iOS-Unified.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Debug/Newtonsoft.Json.dll
