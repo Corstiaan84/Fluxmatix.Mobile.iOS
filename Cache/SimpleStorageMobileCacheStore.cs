@@ -25,7 +25,7 @@ namespace Fluxmatix.Mobile.iOS.Cache
 			_storage.Put (key, value);
 		}
 
-		public object Get<T> (string key)
+		public T Get<T> (string key)
 		{
 			return _storage.Get<T> (key);
 		}
@@ -40,6 +40,14 @@ namespace Fluxmatix.Mobile.iOS.Cache
 			return _storage.HasKey (key);
 		}
 
+		public void Clear() {
+			throw new NotImplementedException ();
+		}
+
+		public T Get<T> (string key, Newtonsoft.Json.Converters.CustomCreationConverter<CacheItem<object>> jsonConverter)
+		{
+			throw new NotImplementedException ();
+		}
 		#endregion
 	}
 }

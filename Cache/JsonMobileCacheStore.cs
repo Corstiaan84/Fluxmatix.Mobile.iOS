@@ -4,23 +4,30 @@ using Foundation;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 
 namespace Fluxmatix.Mobile.iOS.Cache
 {
-	public class JsonMobileCacheProvider : IMobileCacheStore
+	public class JsonMobileCacheStore : IMobileCacheStore
 	{
-		public JsonMobileCacheProvider ()
+		private CustomCreationConverter<CacheItem<object>> _deserializer;
+		public JsonMobileCacheStore ()
 		{
-			GetCacheDirectory ();
+		}
+
+		public void SetCustomCacheItemDeserializer (CustomCreationConverter<CacheItem<object>> deserializer)
+		{
+			_deserializer = deserializer;
 		}
 
 		private string GetCacheDirectory() {
 			var library = NSFileManager.DefaultManager.GetUrls (NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.User) [0];
-			var cacheFolder = Path.Combine (library.AbsoluteString, "Fluxmatix.Mobile.iOS.Cache");
+			var cacheFolder = Path.Combine (library.Path, "FluxmatixMobileiOS");
 			if(Directory.Exists(cacheFolder) == false) {
 				Directory.CreateDirectory (cacheFolder);
-				File.WriteAllText (GetJsonFilePath (), "");
+				var filename = GetJsonFilePath ();
+				File.WriteAllText (filename, "");  
 			}
 			return cacheFolder;
 		}
@@ -31,34 +38,36 @@ namespace Fluxmatix.Mobile.iOS.Cache
 			return filename;
 		}
 
-		private void WriteJsonFile(string content) {
-
-		}
-
 		private List<CacheItem<object>> GetCacheItems() {
 			var filename = GetJsonFilePath ();
 			var json = File.ReadAllText(filename);
-			return JsonConvert.DeserializeObject<List<CacheItem<object>>> (json);
+			if (_deserializer != null) {
+				return JsonConvert.DeserializeObject<List<CacheItem<object>>> (json, _deserializer);
+			} else {
+				return JsonConvert.DeserializeObject<List<CacheItem<object>>> (json);
+			}
 		}
 
 		private void WriteCacheItems(List<CacheItem<object>> items) {
 			var filename = GetJsonFilePath ();
-			File.WriteAllText (filename, JsonConvert.SerializeObject(items));
+			var json = JsonConvert.SerializeObject (items);
+			File.WriteAllText (filename, json);
 		}
 
 		#region IMobileCacheStore implementation
 
 		public string Get (string key)
 		{
-			throw new NotImplementedException ();
+			//throw new NotImplementedException ();
+			return (string)Get<string> (key);
 		}
 
 		public void Put (string key, string value)
 		{
-			throw new NotImplementedException ();
+			Put<string> (key, value);
 		}
 
-		public object Get<T> (string key)
+		public T Get<T> (string key)
 		{
 			var items = GetCacheItems ();
 			if (items == null)
@@ -66,12 +75,13 @@ namespace Fluxmatix.Mobile.iOS.Cache
 			var item = items.Find (q => q.Key == key);
 			if (item == null)
 				throw new CacheKeyNotFoundException ();
-			return JObject.Parse (item.Value.ToString()).ToObject<T>();
+			var result = JsonConvert.DeserializeObject<T> (item.Value.ToString ());
+			return result;
 		}
 
 		public void Put<T> (string key, T value)
 		{
-			var items = GetCacheItems ();
+			var items = GetCacheItems (); 
 			if (items == null)
 				items = new List<CacheItem<object>> ();
 			if(items.Find(q => q.Key == key) != null) {
@@ -86,18 +96,17 @@ namespace Fluxmatix.Mobile.iOS.Cache
 		{
 			var result = false;
 			var items = GetCacheItems ();
-			if (items == null)
-				result = false;
-			if(items.Find(q => q.Key == key) != null) {
-				result = true;
+			if(items != null) {
+				if(items.Find(q => q.Key == key) != null) {
+					result = true;
+				}
 			}
 			return result;
 		}
 
 		public void Clear ()
 		{
-			var items = GetCacheItems ();
-			items.Clear ();
+			var items = new List<CacheItem<object>> ();
 			WriteCacheItems (items);
 		}
 

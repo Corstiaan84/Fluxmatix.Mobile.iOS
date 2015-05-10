@@ -50,7 +50,7 @@
     <Compile Include="UIViews\HeaderWebView.cs" />
     <Compile Include="UIViews\EmptyActionSheet.cs" />
     <Compile Include="Cache\SimpleStorageMobileCacheStore.cs" />
-    <Compile Include="Cache\JsonMobileCacheProvider.cs" />
+    <Compile Include="Cache\JsonMobileCacheStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
