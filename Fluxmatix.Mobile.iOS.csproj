@@ -44,6 +44,7 @@
     <Folder Include="Resources\" />
     <Folder Include="UIViews\" />
     <Folder Include="Cache\" />
+    <Folder Include="UIViewControllers\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,6 +53,10 @@
     <Compile Include="Cache\SimpleStorageMobileCacheStore.cs" />
     <Compile Include="Cache\JsonMobileCacheStore.cs" />
     <Compile Include="UIViews\ListPickerViewModel.cs" />
+    <Compile Include="UIViewControllers\CollectionSelectionViewController.cs" />
+    <Compile Include="UIViews\TagView.cs" />
+    <Compile Include="UIViewControllers\SelectTagsViewController.cs" />
+    <Compile Include="UIViewControllers\FixedHeaderTableViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
