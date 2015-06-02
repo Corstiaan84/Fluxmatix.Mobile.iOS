@@ -27,7 +27,7 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 
 			//setup collection view for the tag selection summary
 			SummaryView = new UIScrollView(new RectangleF(0, 50, (int)View.Frame.Width, 50));
-			SummaryView.ShowsHorizontalScrollIndicator = true;
+			SummaryView.ShowsHorizontalScrollIndicator = true; 
 			SummaryView.ContentSize = new SizeF (800, 50);
 			SummaryView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
 			SummaryView.BackgroundColor = UIColor.Blue;

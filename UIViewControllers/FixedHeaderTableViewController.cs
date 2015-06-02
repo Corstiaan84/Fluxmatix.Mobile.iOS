@@ -8,11 +8,12 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 	{
 		public UIView FixedHeaderView { get; set; }
 		public UITableView TableView { get; private set; }
-		private int _topMargin = 0;
+		public int TopMargin { get; private set; }
 
 		public FixedHeaderTableViewController ()
 		{
 			TableView = new UITableView ();
+			TopMargin = 0;
 		}
 
 		public override void ViewDidLoad ()
@@ -20,11 +21,11 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			base.ViewDidLoad ();
 
 			if(NavigationController != null) {
-				_topMargin += (int)NavigationController.NavigationBar.Frame.Height + 20; //add 20 for statusbar
+				TopMargin += (int)NavigationController.NavigationBar.Frame.Height + 20; //add 20 for statusbar
 			}
 
 			//setup fixed header view
-			FixedHeaderView = new UIView(new RectangleF(0, _topMargin, (int)View.Frame.Width, 100));
+			FixedHeaderView = new UIView(new RectangleF(0, TopMargin, (int)View.Frame.Width, 100));
 			FixedHeaderView.BackgroundColor = UIColor.Blue;
 			Add  (FixedHeaderView);
 
@@ -39,8 +40,8 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		public void ResetTableViewTopMargin() {
 
 			var newTableViewFrame = View.Frame;
-			newTableViewFrame.Y = FixedHeaderView.Frame.Height + _topMargin;
-			newTableViewFrame.Height = newTableViewFrame.Height - (FixedHeaderView.Frame.Height + _topMargin);
+			newTableViewFrame.Y = FixedHeaderView.Frame.Height + TopMargin;
+			newTableViewFrame.Height = newTableViewFrame.Height - (FixedHeaderView.Frame.Height + TopMargin);
 			TableView.Frame = newTableViewFrame;
 		}
 	}

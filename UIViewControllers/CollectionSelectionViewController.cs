@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using Fluxmatix.Mobile.iOS.UIViews;
+using Foundation;
 
 namespace Fluxmatix.Mobile.iOS.UIViewControllers
 {
 	public class CollectionSelectionViewController<T> : FixedHeaderTableViewController
 	{
+		private CollectionSelectionTableViewSource<T> _source;
+		
 		public UISearchBar SearchBar { get; private set; }
 
 		public CollectionSelectionViewController (CollectionSelectionTableViewSource<T> source)
 		{
-			TableView.Source = source;
+			_source = source;
+			TableView.Source = _source;
 		}
 
 		public override void ViewDidLoad ()
@@ -39,7 +43,9 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		{
 			base.ViewDidAppear (animated);
 			//scroll to first selected row
-			//TableView.ScrollToRow(new Foundation.NSIndexPath(), UITableViewScrollPosition.Middle, true);
+			if(_source.SelectionMode == CollectionSelectionTableViewSource<T>.Modes.SingleSelect && _source.Selection.Count != 0) {
+				TableView.ScrollToRow (NSIndexPath.FromRowSection (_source.CollectionBase.IndexOf (_source.Selection [0]), 0), UITableViewScrollPosition.Middle, true);
+			}
 		}
 	}
 
@@ -54,6 +60,10 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		public virtual string CellIdentifier { get; set; }
 
 		public event EventHandler<List<T>> SelectionChanged;
+		public event EventHandler<T> ItemAdded;
+		public event EventHandler<ItemEventArgs<T>> ItemAdding;
+		public event EventHandler<T> ItemRemoved;
+		public event EventHandler<ItemEventArgs<T>> ItemRemoving;
 
 		public enum Modes
 		{
@@ -93,15 +103,22 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			tableView.DeselectRow (indexPath, true);
 			var cell = tableView.CellAt (indexPath);
 			if (cell.Accessory == UITableViewCellAccessory.Checkmark) {
-				Selection.Remove (item);
-				cell.Accessory = UITableViewCellAccessory.None;
+				if(RaiseItemRemovingEvent (item).Continue == true) {
+					Selection.Remove (item);
+					RaiseItemRemovedEvent (item);
+					cell.Accessory = UITableViewCellAccessory.None;
+				};
 			} else {
 				if (SelectionMode == Modes.SingleSelect) {
 					Selection.Clear ();
+					RaiseItemAddingEvent (item);
 					Selection.Add (item);
+					RaiseItemAddedEvent (item);
 				} else {
 					if (Selection.Contains (item) == false) {
+						RaiseItemAddingEvent (item);
 						Selection.Add (item);
+						RaiseItemAddedEvent (item);
 					}
 				}
 				cell.Accessory = UITableViewCellAccessory.Checkmark;
@@ -113,9 +130,12 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		public void DeselectItem (T item, UITableView tableView)
 		{
 			if (Selection.Contains (item)) {
-				Selection.Remove (item);
-				tableView.ReloadData ();
-				RaiseSelectionChangedEvent ();
+				if (RaiseItemRemovingEvent (item).Continue == true) {
+					Selection.Remove (item);
+					tableView.ReloadData ();
+					RaiseItemRemovedEvent (item);
+					RaiseSelectionChangedEvent ();
+				}
 			}
 		}
 
@@ -136,6 +156,38 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			if (SelectionChanged != null)
 				SelectionChanged (this, Selection);
 		}
+
+		private void RaiseItemAddedEvent (T item)
+		{
+			if (ItemAdded != null)
+				ItemAdded (this, item);
+		}
+
+		private void RaiseItemAddingEvent (T item)
+		{
+			if (ItemAdding != null)
+				ItemAdding (this, new ItemEventArgs<T>() { Item = item, Continue = true } );
+		}
+
+		private void RaiseItemRemovedEvent (T item)
+		{
+			if (ItemRemoved != null)
+				ItemRemoved (this, item);
+		}
+
+		private ItemEventArgs<T> RaiseItemRemovingEvent (T item)
+		{
+			var args = new ItemEventArgs<T> { Item = item, Continue = true };
+			if (ItemRemoving != null)
+				ItemRemoving (this, args);
+			return args;
+		}
+	}
+
+	public class ItemEventArgs<T> : EventArgs
+	{
+		public T Item { get; set; }
+		public bool Continue { get; set; }
 	}
 }
 
