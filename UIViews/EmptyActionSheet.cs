@@ -31,6 +31,7 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			//AddSubview (_label);
 			IsVisible = false;
 			Mode = Modes.Standard;
+			BackgroundColor = UIColor.Black;
 			CalcBottomMargin ();
 		}
 
@@ -52,6 +53,9 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 
 		public void SetHeight(int height) {
 			_height = height;
+			var newFrame = Frame;
+			newFrame.Height = height;
+			Frame = newFrame;
 		}
 
 		public void ShowInView ()
@@ -87,8 +91,6 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			if (_owner.NavigationController != null) {
 				if (_owner.NavigationController.ToolbarHidden == false) {
 					_marginBottom = (int)_owner.NavigationController.Toolbar.Frame.Height;
-				} else {
-					_marginBottom = 44;
 				}
 			} 
 		}

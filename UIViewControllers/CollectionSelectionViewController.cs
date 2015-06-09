@@ -64,6 +64,10 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		public event EventHandler<ItemEventArgs<T>> ItemAdding;
 		public event EventHandler<T> ItemRemoved;
 		public event EventHandler<ItemEventArgs<T>> ItemRemoving;
+		public event EventHandler<T> ItemSelected;
+
+		public bool LockItemAddingEvent { get; set; }
+		public bool LockItemRemovingEvent { get; set; }
 
 		public enum Modes
 		{
@@ -80,6 +84,8 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			CollectionDisplay = collection;
 			Selection = new List<T> ();
 			SelectionMode = Modes.SingleSelect;
+			LockItemAddingEvent = false;
+			LockItemRemovingEvent = false;
 		}
 
 		public override nint RowsInSection (UITableView tableview, nint section)
@@ -102,26 +108,36 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			var item = CollectionDisplay [indexPath.Row];
 			tableView.DeselectRow (indexPath, true);
 			var cell = tableView.CellAt (indexPath);
+			RaiseItemSelectedEvent (item);
 			if (cell.Accessory == UITableViewCellAccessory.Checkmark) {
-				if(RaiseItemRemovingEvent (item).Continue == true) {
-					Selection.Remove (item);
-					RaiseItemRemovedEvent (item);
-					cell.Accessory = UITableViewCellAccessory.None;
-				};
+				if (SelectionMode == Modes.MultiSelect) {
+					if(RaiseItemRemovingEvent (item).Continue == true) {
+						Selection.Remove (item);
+						RaiseItemRemovedEvent (item);
+						cell.Accessory = UITableViewCellAccessory.None;
+					};
+				}
 			} else {
 				if (SelectionMode == Modes.SingleSelect) {
-					Selection.Clear ();
-					RaiseItemAddingEvent (item);
-					Selection.Add (item);
-					RaiseItemAddedEvent (item);
+					if(RaiseItemRemovingEvent (Selection[0]).Continue == true) {
+						var tempItemToRemove = Selection [0];
+						Selection.Remove (tempItemToRemove);
+						RaiseItemRemovedEvent (tempItemToRemove);
+						if(RaiseItemAddingEvent (item).Continue == true) {
+							Selection.Add (item);
+							RaiseItemAddedEvent (item);
+							cell.Accessory = UITableViewCellAccessory.None;
+						};
+					};
 				} else {
 					if (Selection.Contains (item) == false) {
-						RaiseItemAddingEvent (item);
-						Selection.Add (item);
-						RaiseItemAddedEvent (item);
+						if (RaiseItemAddingEvent (item).Continue == true) {
+							Selection.Add (item);
+							RaiseItemAddedEvent (item);
+							cell.Accessory = UITableViewCellAccessory.Checkmark;
+						}
 					}
 				}
-				cell.Accessory = UITableViewCellAccessory.Checkmark;
 			}
 			tableView.ReloadData ();
 			RaiseSelectionChangedEvent ();
@@ -134,6 +150,18 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 					Selection.Remove (item);
 					tableView.ReloadData ();
 					RaiseItemRemovedEvent (item);
+					RaiseSelectionChangedEvent ();
+				}
+			}
+		}
+
+		public void SelectItem (T item, UITableView tableView)
+		{
+			if (Selection.Contains (item) == false) {
+				if (RaiseItemAddingEvent (item).Continue == true) {
+					Selection.Add (item);
+					tableView.ReloadData ();
+					RaiseItemAddedEvent (item);
 					RaiseSelectionChangedEvent ();
 				}
 			}
@@ -163,10 +191,14 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 				ItemAdded (this, item);
 		}
 
-		private void RaiseItemAddingEvent (T item)
+		private ItemEventArgs<T> RaiseItemAddingEvent (T item)
 		{
-			if (ItemAdding != null)
-				ItemAdding (this, new ItemEventArgs<T>() { Item = item, Continue = true } );
+			var args = new ItemEventArgs<T> { Item = item, Continue = true };
+			if(LockItemAddingEvent == false) {
+				if (ItemAdding != null)
+					ItemAdding (this, args);
+			}
+			return args;
 		}
 
 		private void RaiseItemRemovedEvent (T item)
@@ -178,9 +210,17 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		private ItemEventArgs<T> RaiseItemRemovingEvent (T item)
 		{
 			var args = new ItemEventArgs<T> { Item = item, Continue = true };
-			if (ItemRemoving != null)
-				ItemRemoving (this, args);
+			if(LockItemRemovingEvent == false) {
+				if (ItemRemoving != null)
+					ItemRemoving (this, args);
+			}
 			return args;
+		}
+
+		private void RaiseItemSelectedEvent (T item)
+		{
+			if (ItemSelected != null)
+				ItemSelected (this, item);
 		}
 	}
 
