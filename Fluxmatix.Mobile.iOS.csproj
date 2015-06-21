@@ -57,6 +57,7 @@
     <Compile Include="UIViews\TagView.cs" />
     <Compile Include="UIViewControllers\SelectTagsViewController.cs" />
     <Compile Include="UIViewControllers\FixedHeaderTableViewController.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
