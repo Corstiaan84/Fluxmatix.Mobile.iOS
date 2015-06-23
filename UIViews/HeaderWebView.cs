@@ -30,16 +30,6 @@ namespace Fluxmatix.Mobile.iOS.UIViews
 			_headerWebView = headerWebView;
 		}
 
-		public override void DraggingStarted (UIScrollView scrollView)
-		{
-//			var newFrame = new Rectangle(20, 20, (int)UIScreen.MainScreen.Bounds.Width, 200);
-//			_headerWebView.HeaderView.Frame = newFrame;
-
-//			scrollView.ContentInset = new UIEdgeInsets(_headerWebView.HeaderView.Frame.Height, 0, 0, 0);
-//			scrollView.ContentOffset = new CoreGraphics.CGPoint(0, 0 - _headerWebView.HeaderView.Frame.Height);
-			//Console.WriteLine("Dragging");
-		}
-
 		public override void Scrolled (UIScrollView scrollView)
 		{
 			//Console.WriteLine("Scrolled " + scrollView.ContentOffset.X.ToString());
