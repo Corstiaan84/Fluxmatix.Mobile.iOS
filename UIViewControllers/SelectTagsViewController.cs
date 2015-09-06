@@ -70,13 +70,14 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 		public virtual void GetSummaryTagViews (List<TagItem> tagsToSummerize)
 		{
 			//update tag selection summary
+
 			//remove all tags
 			foreach (var view in SummaryView.Subviews) {
 				if (view is TagView) {
 					view.RemoveFromSuperview ();
 				}
 			}
-			//re-add all tags
+			//re-add all selected tags
 			TagView tagView;
 			var x = 10;
 			var margin = 10;
@@ -122,7 +123,7 @@ namespace Fluxmatix.Mobile.iOS.UIViewControllers
 			correctedFrame.Y = (tableView.RowHeight - cell.TagView.Frame.Height) / 2;
 			correctedFrame.X = 15;
 
-			//resize tagview if its wider the the tableview - some padding
+			//resize tagview if its wider then the tableview - some padding
 			if(correctedFrame.Width > tableView.Frame.Width - 55)
 				correctedFrame.Width = tableView.Frame.Width - 55;			
 			cell.TagView.Frame = correctedFrame;

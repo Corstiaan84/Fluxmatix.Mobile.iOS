@@ -48,6 +48,11 @@ namespace Fluxmatix.Mobile.iOS.Cache
 		{
 			throw new NotImplementedException ();
 		}
+
+		public void RemoveKey (string key)
+		{
+			throw new NotImplementedException ();
+		}
 		#endregion
 	}
 }

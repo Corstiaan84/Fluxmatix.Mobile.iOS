@@ -7,3 +7,10 @@
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Release/Newtonsoft.Json.dll
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Release/Fluxmatix.Mobile.dll
 /Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Release/Fluxmatix.Mobile.dll.mdb
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Release/Refractored.Xam.Settings.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/Fluxmatix.Mobile.iOS/bin/Release/Refractored.Xam.Settings.Abstractions.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/fluxmatix.mobile.ios/obj/Release/Xamarin.iOS,Version=v1.0.AssemblyAttribute.cs
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/fluxmatix.mobile.ios/bin/Release/Fluxmatix.Mobile.iOS.dll.mdb
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/fluxmatix.mobile.ios/bin/Release/Fluxmatix.Mobile.iOS.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/fluxmatix.mobile.ios/obj/Release/Fluxmatix.Mobile.iOS.dll
+/Users/corstiaanhesselink/Dropbox/Fluxmatix/repos/fluxmatix.mobile.ios/obj/Release/Fluxmatix.Mobile.iOS.dll.mdb

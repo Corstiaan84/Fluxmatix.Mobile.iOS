@@ -13,7 +13,7 @@ namespace Fluxmatix.Mobile.iOS.Cache
 	{
 		private CustomCreationConverter<CacheItem<object>> _deserializer;
 		public JsonMobileCacheStore ()
-		{
+		{ 
 		}
 
 		public void SetCustomCacheItemDeserializer (CustomCreationConverter<CacheItem<object>> deserializer)
@@ -110,6 +110,11 @@ namespace Fluxmatix.Mobile.iOS.Cache
 			WriteCacheItems (items);
 		}
 
+
+		public void RemoveKey (string key)
+		{
+			throw new NotImplementedException ();
+		}
 		#endregion
 	}
 }

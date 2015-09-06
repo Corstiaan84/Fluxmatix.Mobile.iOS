@@ -61,12 +61,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Reflect.Mobile\Fluxmatix.Mobile\Fluxmatix.Mobile.csproj">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fluxmatix.Mobile\Fluxmatix.Mobile.csproj">
       <Project>{C38F1317-6C14-46F4-9AAB-459A9BF5131B}</Project>
       <Name>Fluxmatix.Mobile</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
