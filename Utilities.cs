@@ -4,18 +4,18 @@ namespace Fluxmatix.Mobile.iOS
 {
 	public static class Utilities
 	{
-		private static int _numberOfCallsToSetNetworkIndicatorVisible = 0;
+		private static int _calls = 0;
 
 		public static void SetNetworkActivityIndicatorVisibility(bool setVisible) {
 			if (setVisible) {
-				_numberOfCallsToSetNetworkIndicatorVisible++;
+				_calls++;
 			}
 			else {
-				if(_numberOfCallsToSetNetworkIndicatorVisible != 0) {
-					_numberOfCallsToSetNetworkIndicatorVisible--;
+				if(_calls != 0) {
+					_calls--;
 				}
 			}
-			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = _numberOfCallsToSetNetworkIndicatorVisible > 0;
+			UIApplication.SharedApplication.NetworkActivityIndicatorVisible = _calls > 0;
 		}
 	}
 }
